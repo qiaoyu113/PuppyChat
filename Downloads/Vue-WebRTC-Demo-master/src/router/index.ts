@@ -1,0 +1,22 @@
+// router/index.ts
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/Home.vue')  // 确保路径正确
+  },
+  {
+    path: '/video',
+    name: 'Video',
+    component: () => import('@/components/Video.vue')  // 确保路径正确
+  }
+];
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+});
+
+export default router;
