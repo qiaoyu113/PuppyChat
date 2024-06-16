@@ -77,6 +77,9 @@
       }
       .banner {
         position: relative;
+        .banner-img-pc {
+            display:none;
+        }
         .shadow {
           position: absolute;
           width:100%;

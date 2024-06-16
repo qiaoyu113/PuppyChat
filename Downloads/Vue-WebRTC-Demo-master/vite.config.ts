@@ -13,6 +13,7 @@ export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return defineConfig({
+    base: env.VITE_BASE_URL || '/puppychat/', 
     server: {
       host: "0.0.0.0"
     },
