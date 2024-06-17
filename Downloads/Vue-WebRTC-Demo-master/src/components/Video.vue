@@ -59,12 +59,12 @@
   const rtcConfig: RTCConfiguration = {
     iceServers: [
       {
-        urls: ["stun:stun.l.google.com:19302"]
+        urls: ["stun:jooey.xyz:3031"]
       },
       {
-        urls: ["turn:120.77.253.101:3478"],
-        username: "inter_user",
-        credential: "power_turn"
+        urls: ["turn:jooey.xyz:3031"],
+        username: "joey",
+        credential: "19931103"
       }
     ]
   };
