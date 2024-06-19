@@ -57,6 +57,10 @@
   function goToVideo() {
       router.push('/video');
   }
+
+  // function goToVideo() {
+  //   window.location.href = 'https://v3demo.mediasoup.org/?roomId=uxrtgw5s';
+  // }
   </script>
   <style lang="less" scoped>
   /* 针对移动端的样式 */

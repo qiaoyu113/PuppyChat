@@ -58,11 +58,20 @@
   const userInfo = useUserInfo();
   const rtcConfig: RTCConfiguration = {
     iceServers: [
+      // {
+      //   urls: ["stun:freeturn.net:3478"]
+      // },
+      // {
+      //   urls: ["turn:freeturn.net:3478"],
+      //   username: "free",
+      //   credential: "free"
+      // }
+      // { urls: 'stun:freeturn.net:5349' }, { urls: 'turns:freeturn.tel:5349', username: 'free', credential: 'free' }
       {
-        urls: ["stun:jooey.xyz:3031"]
-      },
+        urls: ["stun:jooey.xyz:3478"]
+      }, 
       {
-        urls: ["turn:jooey.xyz:3031"],
+        urls: ["turn:jooey.xyz:3478"],
         username: "joey",
         credential: "19931103"
       }
@@ -120,6 +129,7 @@
     }
   );
   function onLogin(username: string) {
+    console.log('rtcConfig:', rtcConfig);
     // 刚进入刷新remote，准备连接对方的pc
     remotePc = new RTCPeerConnection(rtcConfig);
     start(username);
@@ -266,6 +276,9 @@
       console.log("localPc:", event.candidate, event);
       // 回调时，将自己candidate发给对方，对方可以直接addIceCandidate(candidate)添加可以获取流
       if (event.candidate) sc.emit(SOCKET_ON_RTC.CANDIDATE, event.candidate, callType);
+    };
+    localPc.onicecandidateerror = function (event) {
+      console.log("localPcError:", event);
     };
     // 记录给谁打电话
     userInfo.userInfo.toUserName = toUser;

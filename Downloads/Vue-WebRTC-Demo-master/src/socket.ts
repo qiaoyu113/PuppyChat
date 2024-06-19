@@ -20,10 +20,10 @@ export default class SocketControl {
   }
   async connect() {
     return new Promise(res => {
-      if (this.userInfo.userList.find(u => u.username === this.username)) {
-        showDiaLog({ type: DIALOG_TYPE.WARNING, msg: "连接失败,用户名也就存在!" });
-        return;
-      }
+      // if (this.userInfo.userList.find(u => u.username === this.username)) {
+      //   showDiaLog({ type: DIALOG_TYPE.WARNING, msg: "连接失败,用户名也就存在!" });
+      //   return;
+      // }
       this.socket = io(baseUrl, {
         path: "/rtc",
         query: { username: this.username, room: "001" }
@@ -41,16 +41,18 @@ export default class SocketControl {
   }
   //   系统消息监听
   sys(socket: Socket) {
+    console.log(this.username);
+    
     socket.on(SOCKET_ON_SYS.USER_LIST, data => {
       this.userInfo.userList = data;
     });
     this.socket.on(SOCKET_ON_SYS.CONNECTION, () => {
-      showDiaLog({ type: DIALOG_TYPE.SUCCESS, msg: "连接成功" });
+      showDiaLog({ type: DIALOG_TYPE.SUCCESS, msg: "connect success!" });
       // 储存当前用户
       this.userInfo.userInfo.username = this.username;
     });
     this.socket.on(SOCKET_ON_SYS.CONNECTION_ERROR, () => {
-      showDiaLog({ type: DIALOG_TYPE.ERROR, msg: "连接失败:可能用户名已经被使用!" });
+      showDiaLog({ type: DIALOG_TYPE.ERROR, msg: "connect error!" });
     });
   }
   emit<T>(key: SOCKET_ON_RTC, data: T, callType?: CALL_TYPE) {
@@ -107,4 +109,22 @@ export default class SocketControl {
       });
     });
   }
+  endCall() {
+    console.log('======================asdf===============================================')
+
+    console.log('======================asdf===============================================')
+
+    console.log('======================asdf===============================================')
+
+    this.socket.on(SOCKET_ON_RTC.USER_OFF, async (res: Required<ResRtcType>) => {
+      // 接收倒answer
+      fun({
+        ...res
+      });
+    });
+  }
 }
+function fun(arg0: { nowUsername: string; toUsername: string; callType: CALL_TYPE; code: import("./enum").DATA_CODE; msg: string; data: any; }) {
+  throw new Error("Function not implemented.");
+}
+

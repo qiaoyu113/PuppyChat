@@ -10,7 +10,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/video',
     name: 'Video',
-    component: () => import('@/components/Video.vue')  // 确保路径正确
+    // component: () => import('@/components/Video.vue')  // 确保路径正确
+    component: () => import('@/components/VideoLayout.vue')  // 确保路径正确
   }
 ];
 
