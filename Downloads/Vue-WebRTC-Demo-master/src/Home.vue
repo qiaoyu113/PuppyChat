@@ -29,7 +29,7 @@
               <div class="container">
                   <h2>YouTube</h2>
                   <p>see Puppy</p>
-                  <button onclick="location.href='#'">Send</button>
+                  <button @click="goToYoutube">Share</button>
               </div>
           </div>
           <!-- <div class="card">
@@ -51,16 +51,23 @@
   </template>
   <script setup lang="ts">
   import { useRouter } from 'vue-router'
+  import { onMounted, ref } from 'vue';
   
   const router = useRouter();
+  let userName = ref("");
   
   function goToVideo() {
+      (window as any).socket.emit('update_roles', {
+        "roomId": (window as any).roomId.value,
+        "user": (window as any).userName
+      });
       router.push('/video');
   }
 
-  // function goToVideo() {
-  //   window.location.href = 'https://v3demo.mediasoup.org/?roomId=uxrtgw5s';
-  // }
+  function goToYoutube() {
+      router.push('/youtube');
+  }
+
   </script>
   <style lang="less" scoped>
   /* 针对移动端的样式 */

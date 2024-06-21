@@ -15,7 +15,11 @@ export default ({ mode }) => {
   return defineConfig({
     base: env.VITE_BASE_URL || '/puppychat/', 
     server: {
-      host: "0.0.0.0"
+      host: "0.0.0.0",
+      // hmr: {
+      //   port: 443,
+      //   protocol: "wss",
+      // },
     },
     plugins: [vue(), svgBuilder("./src/assets/imgs/")],
     build: {

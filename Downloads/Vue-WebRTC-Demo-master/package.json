@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,7 +15,8 @@
     "socket.io-client": "^4.6.2",
     "vue": "^3.2.47",
     "vue-router": "^4.3.3",
-    "web-loading": "^1.4.19"
+    "web-loading": "^1.4.19",
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

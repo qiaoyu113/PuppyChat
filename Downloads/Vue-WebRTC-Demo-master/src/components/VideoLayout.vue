@@ -1,16 +1,16 @@
 <template>
     <div class="video-chat-container">
     <!-- 弹窗 -->
-    <div v-if="!iframeLoaded && !callEnded" class="modal">
+    <!-- <div v-if="!iframeLoaded && !callEnded" class="modal">
       <div class="modal-content">
         <h1>Enter Room ID</h1>
         <input type="text" v-model="roomId" maxlength="3" placeholder="3 digits" style="margin-top:4vh;width:60vw;height: 40px;padding:10px 20px;border: 1px solid #333;" />
         <button @click="startCall"  style="margin-top:20vh;width: 50vw;height: 6vh;border-radius:7px;">Start</button>
       </div>
-    </div>
+    </div> -->
 
     <!-- 视频聊天和挂断按钮 -->
-    <div v-if="iframeLoaded && !callEnded">
+    <div v-if="!callEnded">
       <button @click="endCall" class="hangup-button">Hang Up</button>
       <iframe
         ref="videoIframe"
@@ -49,15 +49,9 @@
 </template>
   
 <script lang="ts" setup>
-  import { ref, onUnmounted, computed } from 'vue';
-  import { io } from "socket.io-client";
-  import { baseUrl } from "@/config";
-  const socket = io(baseUrl, {
-        path: "/rtc",
-        query: { username: '123', room: "001" }
-    });
-  
-  const roomId = ref('');
+  import { ref, onUnmounted, computed, onMounted } from 'vue';
+  import { Socket } from "socket.io-client";
+
   const iframeUrl = ref('');
   const iframeLoaded = ref(false);
   const callStarted = ref(false);
@@ -65,28 +59,40 @@
   const startTime = ref<Date | null>(null);
   const endTime = ref<Date | null>(null);
   const videoIframe = ref<null | HTMLIFrameElement>(null);
+
+  //   系统消息监听
+  const sys = (socket: Socket) => {
+    socket.on('endCalls', (data) => {
+        console.log('Received endCalls:', data);
+        if(data.user != (window as any).userName && data.roomId == (window as any).roomId.value) {
+          callEnded.value = true;
+          iframeLoaded.value = false;
+          endTime.value = new Date();
+        }
+    });
+  }
   
-  const startCall = () => {
-    if (/^\d{3}$/.test(roomId.value)) {
-      iframeUrl.value = `https://v3demo.mediasoup.org/?roomId=${roomId.value}`;
+  onMounted(() => {
+    if ((window as any).roomId.value) {
+      iframeUrl.value = `https://v3demo.mediasoup.org/?roomId=${(window as any).roomId.value}`;
       iframeLoaded.value = true;
       callStarted.value = true;
       startTime.value = new Date();
+      sys((window as any).socket);
+      // websocket.send(JSON.stringify({ action: 'startCall', roomId: roomId.value }));
     } else {
       alert('Please enter a valid 3-digit Room ID.');
     }
-  };
+  });
   
   const endCall = () => {
     callEnded.value = true;
     iframeLoaded.value = false;
     endTime.value = new Date();
-    if (videoIframe.value) {
-      const stream = (videoIframe.value.contentWindow as any)?.stream;
-      if (stream) {
-        stream.getTracks().forEach((track: any) => track.stop());
-      }
-    }
+    (window as any).socket.emit('endCalls', {
+      "roomId": (window as any).roomId.value,
+      "user": (window as any).userName
+    });
   };
   
   const goBack = () => {
@@ -111,6 +117,7 @@
       }
     }
   });
+
   </script>
   
   <style lang="less" scoped>

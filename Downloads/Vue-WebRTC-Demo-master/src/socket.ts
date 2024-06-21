@@ -4,7 +4,6 @@ import { useUserInfo } from "./pinia/userInfo";
 import { ResRtcType, RtcEmitParams, RtcFun } from "./type";
 import { showDiaLog } from "./utils";
 import { baseUrl } from "@/config";
-console.log(baseUrl);
 
 // socket 控制类
 export default class SocketControl {

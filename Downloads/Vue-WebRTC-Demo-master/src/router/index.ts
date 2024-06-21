@@ -12,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Video',
     // component: () => import('@/components/Video.vue')  // 确保路径正确
     component: () => import('@/components/VideoLayout.vue')  // 确保路径正确
+  },
+  {
+    path: '/youtube',
+    name: 'Youtube',
+    // component: () => import('@/components/Video.vue')  // 确保路径正确
+    component: () => import('@/components/Youtube.vue')  // 确保路径正确
   }
 ];
 
